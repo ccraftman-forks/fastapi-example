@@ -1,3 +1,4 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ccraftman-forks_fastapi-example&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ccraftman-forks_fastapi-example)
 # Comandos
 ## Instalar dependencias
 `pip install --no-cache-dir --upgrade -r requirements.txt`
