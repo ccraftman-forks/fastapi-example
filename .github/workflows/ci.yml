@@ -19,5 +19,8 @@ jobs:
         cache: 'pip'
     - run: pip install --no-cache-dir --upgrade -r requirements.txt
 
-    - name: running tests
-      run: python -m unittest discover tests
+    - name: running tests & generating coverage
+      run: |
+        coverage run -m unittest discover tests
+        coverage report -m
+        coverage html
