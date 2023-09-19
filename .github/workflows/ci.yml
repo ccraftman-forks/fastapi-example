@@ -8,9 +8,7 @@ on:
 
 jobs:
   build:
-  
     runs-on: ubuntu-latest
-    
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v4
@@ -18,23 +16,34 @@ jobs:
         python-version: '3.9'
         cache: 'pip'
     - run: pip install --no-cache-dir --upgrade -r requirements.txt
-
     - name: running tests & generating coverage
       run: |
         coverage run -m unittest discover tests
         coverage report -m
         coverage xml
-
     - name: check for coverage.xml
       run: ls
-
     - uses: SonarSource/sonarcloud-github-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      
     - name: SonarQube Quality Gate Check
       uses: SonarSource/sonarqube-quality-gate-action@v1.1.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  push-image:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag ccraftman/fast-api:${{ github.sha }}
+
+    - name: Docker Login
+      uses: docker/login-action@v3.0.0
+      with:
+        username: ccraftman
+        password: ${{ secrets.DOCKER_TOKEN }} 
+    - name: Push Docker image
+      run: docker push ccraftman/fast-api:${{ github.sha }}
