@@ -7,24 +7,22 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4.7.0
     - name: Setup Python
+    - uses: actions/setup-python@v4.7.0
       with:
-        python-version: "3.9"
+        python-version: '3.9'
         cache: 'pip'
-    - run: pip install --no-cache-dir --upgrade -r requirements.txt
+    - name: Install dependencies
+    - run: pip install -r requirements.txt
     
-    # - name: Run tests
-    # - run: python -m unittest discover tests
-    
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ccraftman/fast-api:$(date +%s)
+    - name: Run tests
+    - run: python -m unittest discover tests
+
+    # - uses: actions/checkout@v3
+    # - name: Build the Docker image
+    #   run: docker build . --file Dockerfile --tag ccraftman/fast-api:$(date +%s)
 
