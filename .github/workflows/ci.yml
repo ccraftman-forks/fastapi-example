@@ -25,19 +25,8 @@ jobs:
         coverage report -m
         coverage xml
 
-    - name: SonarCloud Scan
-      uses: actions/checkout@v3
-      uses: SonarSource/sonarcloud-github-action@master
+    - uses: actions/checkout@v3
+    - uses: SonarSource/sonarcloud-github-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }} 
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-    - name: Build the Docker image
-    - uses: actions/checkout@v3
-      run: docker build . --file Dockerfile --tag ccraftman/fast-api:$(date +%s)
-
-    - name: Push Docker image
-    - uses: actions/checkout@v3
-      run: docker push ccraftman/fast-api:$(date +%s)
-
-
